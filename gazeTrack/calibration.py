@@ -66,3 +66,18 @@ class Calibration(object):
 
         best_threshold, iris_size = min(trials.items(), key=(lambda p: abs(p[1] - average_iris_size)))
         return best_threshold
+    
+    def evaluate(self, eye_frame, side):
+        """Improves calibration by taking into consideration the
+        given image.
+
+        Arguments:
+            eye_frame (numpy.ndarray): Frame of the eye
+            side: Indicates whether it's the left eye (0) or the right eye (1)
+        """
+        threshold = self.find_best_threshold(eye_frame)
+
+        if side == 0:
+            self.thresholds_left.append(threshold)
+        elif side == 1:
+            self.thresholds_right.append(threshold)
